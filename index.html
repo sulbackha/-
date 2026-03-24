@@ -85,58 +85,66 @@ let j=Math.floor(Math.random()*(i+1));
 
 function draw(){
 
-let grade1=document.getElementById("g1").value
-.split("\n")
-.filter(n=>n.trim()!=="");
-
-let grade2=document.getElementById("g2").value
-.split("\n")
-.filter(n=>n.trim()!=="");
+let g1=document.getElementById("g1").value.split("\n").filter(n=>n.trim()!=="");
+let g2=document.getElementById("g2").value.split("\n").filter(n=>n.trim()!=="");
 
 let groupCount=Number(document.getElementById("groups").value);
 
-shuffle(grade1);
-shuffle(grade2);
-
-// 학년 섞기
-let people=[];
-while(grade1.length || grade2.length){
-if(grade1.length) people.push(grade1.pop());
-if(grade2.length) people.push(grade2.pop());
-}
-
-shuffle(people);
-
-let total=people.length;
+let total=g1.length+g2.length;
 
 if(total < groupCount*5 || total > groupCount*6){
 alert("현재 인원으로는 조당 5~6명 구성이 불가능합니다.");
 return;
 }
 
-let groups=[];
+shuffle(g1);
+shuffle(g2);
 
+let groups=[];
 for(let i=0;i<groupCount;i++){
 groups.push([]);
 }
 
-// 먼저 5명씩 배치
+// 목표 조 인원 계산
+let sizes=new Array(groupCount).fill(5);
+let extra=total-groupCount*5;
+
+for(let i=0;i<extra;i++){
+sizes[i]++;
+}
+
+shuffle(sizes);
+
+// 학년 목표 분배
+let g1PerGroup=Math.floor(g1.length/groupCount);
+let g1Extra=g1.length%groupCount;
+
+let g1Targets=[];
+
 for(let i=0;i<groupCount;i++){
-for(let j=0;j<5;j++){
-groups[i].push(people.pop());
+g1Targets.push(g1PerGroup+(i<g1Extra?1:0));
+}
+
+shuffle(g1Targets);
+
+// 1학년 배치
+for(let i=0;i<groupCount;i++){
+for(let j=0;j<g1Targets[i];j++){
+if(g1.length) groups[i].push(g1.pop());
 }
 }
 
-// 남은 인원 → 각 조에 1명씩
-let i=0;
-while(people.length){
-groups[i].push(people.pop());
-i++;
+// 2학년 채우기
+for(let i=0;i<groupCount;i++){
+while(groups[i].length < sizes[i]){
+if(g2.length) groups[i].push(g2.pop());
+}
 }
 
 let result="";
 
 for(let i=0;i<groups.length;i++){
+shuffle(groups[i]);
 result+="<h2>"+(i+1)+"조 ("+groups[i].length+"명)</h2>"+groups[i].join(", ")+"<br><br>";
 }
 
