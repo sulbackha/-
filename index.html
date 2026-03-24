@@ -92,8 +92,8 @@ let groupCount=Number(document.getElementById("groups").value);
 
 let total=g1.length+g2.length;
 
-if(total < groupCount*5 || total > groupCount*6){
-alert("현재 인원으로는 조당 5~6명 구성이 불가능합니다.");
+if(total < groupCount*5){
+alert("모든 조에 최소 5명을 배치할 수 없습니다.");
 return;
 }
 
@@ -105,40 +105,35 @@ for(let i=0;i<groupCount;i++){
 groups.push([]);
 }
 
-// 목표 조 인원 계산
-let sizes=new Array(groupCount).fill(5);
-let extra=total-groupCount*5;
-
-for(let i=0;i<extra;i++){
-sizes[i]++;
+// 학년 균등 분배
+for(let i=0;i<g1.length;i++){
+groups[i % groupCount].push(g1[i]);
 }
 
-shuffle(sizes);
+for(let i=0;i<g2.length;i++){
+groups[i % groupCount].push(g2[i]);
+}
 
-// 학년 목표 분배
-let g1PerGroup=Math.floor(g1.length/groupCount);
-let g1Extra=g1.length%groupCount;
+// 최소 5명 보장
+let people=[];
+groups.forEach(g=>people.push(...g));
+shuffle(people);
 
-let g1Targets=[];
+groups=[];
+for(let i=0;i<groupCount;i++){
+groups.push([]);
+}
 
 for(let i=0;i<groupCount;i++){
-g1Targets.push(g1PerGroup+(i<g1Extra?1:0));
-}
-
-shuffle(g1Targets);
-
-// 1학년 배치
-for(let i=0;i<groupCount;i++){
-for(let j=0;j<g1Targets[i];j++){
-if(g1.length) groups[i].push(g1.pop());
+for(let j=0;j<5;j++){
+groups[i].push(people.pop());
 }
 }
 
-// 2학년 채우기
-for(let i=0;i<groupCount;i++){
-while(groups[i].length < sizes[i]){
-if(g2.length) groups[i].push(g2.pop());
-}
+// 남은 인원 랜덤 추가
+while(people.length){
+let r=Math.floor(Math.random()*groupCount);
+groups[r].push(people.pop());
 }
 
 let result="";
