@@ -63,8 +63,8 @@ font-size:28px;
 <h3>2학년</h3>
 <textarea id="g2" placeholder="2학년 이름 한 줄씩"></textarea>
 
-조 인원 :
-<input type="number" id="size" value="4">
+조 수 :
+<input type="number" id="groups" value="4">
 
 <br><br>
 
@@ -93,7 +93,7 @@ let grade2=document.getElementById("g2").value
 .split("\n")
 .filter(n=>n.trim()!=="");
 
-let size=Number(document.getElementById("size").value);
+let groupCount=Number(document.getElementById("groups").value);
 
 shuffle(grade1);
 shuffle(grade2);
@@ -101,22 +101,24 @@ shuffle(grade2);
 let all=[];
 
 while(grade1.length||grade2.length){
-
 if(grade1.length) all.push(grade1.pop());
 if(grade2.length) all.push(grade2.pop());
+}
 
+let groups=[];
+
+for(let i=0;i<groupCount;i++){
+groups.push([]);
+}
+
+for(let i=0;i<all.length;i++){
+groups[i%groupCount].push(all[i]);
 }
 
 let result="";
-let groupNum=1;
 
-for(let i=0;i<all.length;i+=size){
-
-let group=all.slice(i,i+size);
-
-result+="<h2>"+groupNum+"조</h2>"+group.join(", ")+"<br><br>";
-
-groupNum++;
+for(let i=0;i<groups.length;i++){
+result+="<h2>"+(i+1)+"조</h2>"+groups[i].join(", ")+"<br><br>";
 }
 
 document.getElementById("result").innerHTML=result;
