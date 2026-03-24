@@ -3,13 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <title>조 추첨</title>
+
+<style>
+body{
+    font-family: sans-serif;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container{
+    width: 600px;
+}
+
+h1{
+    font-size: 50px;
+}
+
+textarea{
+    width: 100%;
+    height: 200px;
+    font-size: 20px;
+}
+
+input{
+    font-size: 20px;
+    width: 80px;
+}
+
+button{
+    font-size: 22px;
+    padding: 10px 20px;
+    margin-top: 15px;
+}
+
+#result{
+    margin-top: 30px;
+    font-size: 28px;
+}
+</style>
+
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>조 추첨 🎲</h1>
 
-<textarea id="names" rows="10" cols="30" placeholder="이름 한 줄씩"></textarea>
+<textarea id="names" placeholder="이름 한 줄씩 입력"></textarea>
+
 <br><br>
 
 조 인원:
@@ -20,6 +66,8 @@
 <button onclick="draw()">조 추첨!</button>
 
 <div id="result"></div>
+
+</div>
 
 <script>
 
@@ -43,7 +91,7 @@ for(let i = 0; i < names.length; i += size){
 
 let group = names.slice(i, i + size);
 
-result += "<h3>" + groupNum + "조</h3>" + group.join(", ");
+result += "<h2>" + groupNum + "조</h2>" + group.join(", ") + "<br><br>";
 
 groupNum++;
 }
