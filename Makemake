@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>조 추첨</title>
+</head>
+
+<body>
+
+<h1>조 추첨 🎲</h1>
+
+<textarea id="names" rows="10" cols="30" placeholder="이름 한 줄씩"></textarea>
+<br><br>
+
+조 인원:
+<input type="number" id="size" value="4">
+
+<br><br>
+
+<button onclick="draw()">조 추첨!</button>
+
+<div id="result"></div>
+
+<script>
+
+function draw(){
+
+let names = document.getElementById("names").value
+.split("\n")
+.filter(n => n.trim() !== "");
+
+let size = Number(document.getElementById("size").value);
+
+for(let i = names.length - 1; i > 0; i--){
+let j = Math.floor(Math.random() * (i + 1));
+[names[i], names[j]] = [names[j], names[i]];
+}
+
+let result = "";
+let groupNum = 1;
+
+for(let i = 0; i < names.length; i += size){
+
+let group = names.slice(i, i + size);
+
+result += "<h3>" + groupNum + "조</h3>" + group.join(", ");
+
+groupNum++;
+}
+
+document.getElementById("result").innerHTML = result;
+
+}
+
+</script>
+
+</body>
+</html>
