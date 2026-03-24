@@ -98,21 +98,19 @@ let groupCount=Number(document.getElementById("groups").value);
 shuffle(grade1);
 shuffle(grade2);
 
-let all=[];
-
-while(grade1.length||grade2.length){
-if(grade1.length) all.push(grade1.pop());
-if(grade2.length) all.push(grade2.pop());
-}
-
 let groups=[];
-
 for(let i=0;i<groupCount;i++){
 groups.push([]);
 }
 
-for(let i=0;i<all.length;i++){
-groups[i%groupCount].push(all[i]);
+// 1학년 배치
+for(let i=0;i<grade1.length;i++){
+groups[i % groupCount].push(grade1[i]);
+}
+
+// 2학년 배치
+for(let i=0;i<grade2.length;i++){
+groups[i % groupCount].push(grade2[i]);
 }
 
 let result="";
