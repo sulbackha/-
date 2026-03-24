@@ -6,43 +6,46 @@
 
 <style>
 body{
-    font-family: sans-serif;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+font-family:sans-serif;
+text-align:center;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
 }
 
 .container{
-    width: 600px;
+width:700px;
 }
 
 h1{
-    font-size: 50px;
+font-size:50px;
+margin-bottom:30px;
 }
 
 textarea{
-    width: 100%;
-    height: 200px;
-    font-size: 20px;
+width:100%;
+height:150px;
+font-size:18px;
+margin-bottom:20px;
 }
 
 input{
-    font-size: 20px;
-    width: 80px;
+font-size:20px;
+width:80px;
 }
 
 button{
-    font-size: 22px;
-    padding: 10px 20px;
-    margin-top: 15px;
+font-size:22px;
+padding:12px 25px;
+margin-top:15px;
+cursor:pointer;
 }
 
 #result{
-    margin-top: 30px;
-    font-size: 28px;
+margin-top:40px;
+font-size:28px;
 }
 </style>
 
@@ -54,11 +57,13 @@ button{
 
 <h1>조 추첨 🎲</h1>
 
-<textarea id="names" placeholder="이름 한 줄씩 입력"></textarea>
+<h3>1학년</h3>
+<textarea id="g1" placeholder="1학년 이름 한 줄씩"></textarea>
 
-<br><br>
+<h3>2학년</h3>
+<textarea id="g2" placeholder="2학년 이름 한 줄씩"></textarea>
 
-조 인원:
+조 인원 :
 <input type="number" id="size" value="4">
 
 <br><br>
@@ -71,32 +76,50 @@ button{
 
 <script>
 
-function draw(){
-
-let names = document.getElementById("names").value
-.split("\n")
-.filter(n => n.trim() !== "");
-
-let size = Number(document.getElementById("size").value);
-
-for(let i = names.length - 1; i > 0; i--){
-let j = Math.floor(Math.random() * (i + 1));
-[names[i], names[j]] = [names[j], names[i]];
+function shuffle(array){
+for(let i=array.length-1;i>0;i--){
+let j=Math.floor(Math.random()*(i+1));
+[array[i],array[j]]=[array[j],array[i]];
+}
 }
 
-let result = "";
-let groupNum = 1;
+function draw(){
 
-for(let i = 0; i < names.length; i += size){
+let grade1=document.getElementById("g1").value
+.split("\n")
+.filter(n=>n.trim()!=="");
 
-let group = names.slice(i, i + size);
+let grade2=document.getElementById("g2").value
+.split("\n")
+.filter(n=>n.trim()!=="");
 
-result += "<h2>" + groupNum + "조</h2>" + group.join(", ") + "<br><br>";
+let size=Number(document.getElementById("size").value);
+
+shuffle(grade1);
+shuffle(grade2);
+
+let all=[];
+
+while(grade1.length||grade2.length){
+
+if(grade1.length) all.push(grade1.pop());
+if(grade2.length) all.push(grade2.pop());
+
+}
+
+let result="";
+let groupNum=1;
+
+for(let i=0;i<all.length;i+=size){
+
+let group=all.slice(i,i+size);
+
+result+="<h2>"+groupNum+"조</h2>"+group.join(", ")+"<br><br>";
 
 groupNum++;
 }
 
-document.getElementById("result").innerHTML = result;
+document.getElementById("result").innerHTML=result;
 
 }
 
